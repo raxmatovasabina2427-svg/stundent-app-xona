@@ -1,0 +1,82 @@
+<div class="head"><h1>Navbatga yozilish</h1></div>
+<div class="steps" aria-hidden="true">{{#each steps}}<span class="{{#if done}}done{{/if}}{{#if active}}active{{/if}}"></span>{{/each}}</div>
+
+{{#if s.bolim}}
+<nav class="crumbs" aria-label="Tanlovlar">
+  <a href="/navbat/yangi">{{s.bolim.nomi}} ✕</a>
+  {{#if s.tur}}<a href="/navbat/yangi?bolim={{s.bolim.id}}">{{s.tur.nomi}} ✕</a>{{/if}}
+  {{#if (gt s.step 3)}}<a href="/navbat/yangi?bolim={{s.bolim.id}}&tur={{s.tur.id}}">{{#if s.xodim}}{{s.xodim.familiya}} {{s.xodim.ism}}{{else}}Farqi yo'q{{/if}} ✕</a>{{/if}}
+  {{#if s.sana}}<a href="/navbat/yangi?bolim={{s.bolim.id}}&tur={{s.tur.id}}&xodim={{s.xodimId}}">{{sana s.sana}} ✕</a>{{/if}}
+</nav>
+{{/if}}
+
+{{#if (eq s.step 1)}}
+  <h2>1. Qaysi bo'limga?</h2>
+  <form class="filters mb0" method="get" action="/navbat/yangi">
+    <div class="field"><label for="q" class="muted">Qidiruv</label><input type="search" id="q" name="q" value="{{q}}" placeholder="Bo'lim nomi"></div>
+    <div><button type="submit">Izlash</button></div>
+  </form>
+  <div class="choice-list mt">
+    {{#each bolimlar}}
+      <a class="choice {{#if meniki}}mine{{/if}}" href="/navbat/yangi?bolim={{id}}">
+        <b>{{nomi}}</b><small>{{turi turi}}{{#if parent}} · {{parent}}{{/if}}{{#if xona}} · {{xona}}-xona{{/if}} · {{xodimlar}} ta xodim qabul qiladi</small>
+      </a>
+    {{else}}<div class="card empty">Hozircha qabul qiladigan bo'limlar yo'q.</div>{{/each}}
+  </div>
+{{/if}}
+
+{{#if (eq s.step 2)}}
+  <h2>2. Murojaat turi</h2>
+  <div class="choice-list">
+    {{#each turlar}}
+      <a class="choice" href="/navbat/yangi?bolim={{../s.bolim.id}}&tur={{id}}"><b>{{nomi}}</b>{{#if tavsif}}<small>{{tavsif}}</small>{{/if}}</a>
+    {{else}}<div class="card empty">Bu bo'limda murojaat turlari hali kiritilmagan. Bo'limga murojaat qiling.</div>{{/each}}
+  </div>
+{{/if}}
+
+{{#if (eq s.step 3)}}
+  <h2>3. Kimga?</h2>
+  <div class="choice-list">
+    {{#if (gt xodimlar.length 1)}}
+      <a class="choice" href="/navbat/yangi?bolim={{s.bolim.id}}&tur={{s.tur.id}}&xodim=0"><b>Farqi yo'q</b><small>Barcha xodimlarning bo'sh vaqtlari ko'rsatiladi</small></a>
+    {{/if}}
+    {{#each xodimlar}}
+      <a class="choice" href="/navbat/yangi?bolim={{../s.bolim.id}}&tur={{../s.tur.id}}&xodim={{id}}">
+        <b>{{familiya}} {{ism}} {{ochestva}}</b><small>{{#if lavozim}}{{lavozim}} · {{/if}}Qabul kunlari: {{#each kunlar}}{{kunQisqa this}}{{#unless @last}}, {{/unless}}{{/each}}</small></a>
+    {{else}}<div class="card empty">Bu bo'limda qabul qiluvchi xodimlar yo'q.</div>{{/each}}
+  </div>
+{{/if}}
+
+{{#if (eq s.step 4)}}
+  <h2>4. Sana</h2>
+  <div class="days">
+    {{#each kunlar}}
+      {{#if (gt bosh 0)}}
+        <a class="day" href="/navbat/yangi?bolim={{../s.bolim.id}}&tur={{../s.tur.id}}&xodim={{../s.xodimId}}&sana={{this.sana}}"><small>{{hafta}}</small><b>{{sana this.sana}}</b><small>{{bosh}} joy</small></a>
+      {{else}}
+        <div class="day off"><b>{{sana this.sana}}</b><small>{{#if qabul}}joy yo'q{{else}}qabul yo'q{{/if}}</small></div>
+      {{/if}}
+    {{/each}}
+  </div>
+{{/if}}
+
+{{#if (eq s.step 5)}}
+  <h2>5. Vaqt va mavzu</h2>
+  <form method="post" action="/navbat" data-once>
+    {{> csrf}}
+    <input type="hidden" name="bolim" value="{{s.bolim.id}}"><input type="hidden" name="tur" value="{{s.tur.id}}">
+    <input type="hidden" name="xodim" value="{{s.xodimId}}"><input type="hidden" name="sana" value="{{s.sana}}">
+    <div id="slots" class="card">
+      {{> slots groups=groups hech=hech}}
+      <button type="button" class="btn-sm mt" hx-get="/navbat/slotlar?bolim={{s.bolim.id}}&xodim={{s.xodimId}}&sana={{s.sana}}" hx-target="#slot-list" hx-swap="outerHTML">↻ Yangilash</button>
+    </div>
+    {{#unless hech}}
+    <div class="card">
+      <div class="field"><label for="mavzu">Mavzu (ixtiyoriy)</label>
+        <textarea id="mavzu" name="mavzu" maxlength="1000" placeholder="Murojaatingizni qisqacha yozing"></textarea></div>
+      {{#if s.tur.kerakli_hujjatlar}}<div class="alert info"><b>O'zingiz bilan olib keling:</b> {{s.tur.kerakli_hujjatlar}}</div>{{/if}}
+      <button class="btn-primary btn-lg btn-block" type="submit">Navbatni olish</button>
+    </div>
+    {{/unless}}
+  </form>
+{{/if}}

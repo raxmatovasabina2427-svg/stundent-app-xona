@@ -1,0 +1,5 @@
+<link rel="stylesheet" href="/p/xona_bron/app.css">
+<script src="/p/xona_bron/app.js" defer></script>
+<div class="head"><a href="/xona_bron/mening" class="muted">← Mening bronlarim</a><h1>Bron tafsilotlari</h1></div>
+<div class="card"><h2>{{booking.resurs_nomi}}</h2><p><b>Foydalanuvchi:</b> {{booking.ism}} {{booking.familiya}}</p><p><b>Sana:</b> {{sana booking.sana}}</p><p><b>Vaqt:</b> {{booking.boshlanish}}–{{booking.tugash}}</p><p><b>Odamlar soni:</b> {{booking.odam_soni}}</p><p><b>Maqsad:</b> {{booking.sabab}}</p><p><b>Holat:</b> <span class="badge">{{holat booking.status}}</span></p>{{#if booking.javob_izoh}}<p><b>Mas’ul izohi:</b> {{booking.javob_izoh}}</p>{{/if}}</div>
+<div class="card"><h2>Bron tarixi</h2>{{#if history.length}}<ul>{{#each history}}<li>{{holat yangi_status}} — {{vaqt_matn}}{{#if izoh}} — {{izoh}}{{/if}}</li>{{/each}}</ul>{{else}}<p class="muted">Tarix mavjud emas.</p>{{/if}}</div>

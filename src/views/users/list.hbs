@@ -1,0 +1,39 @@
+<div class="head"><div><h1>Foydalanuvchilar</h1><span class="muted">Jami: {{count}}</span></div>
+  <div class="actions"><a class="btn btn-primary" href="/admin/users/new{{#if f.role}}?role={{f.role}}{{/if}}">+ Yangi foydalanuvchi</a></div></div>
+
+<form class="card filters" method="get" action="/admin/users">
+  <div class="field"><label for="q">Qidiruv</label><input type="search" id="q" name="q" value="{{f.q}}" placeholder="FIO, login, telefon"></div>
+  <div class="field"><label for="role">Rol</label><select id="role" name="role"><option value="">Hammasi</option>{{#each allRoles}}<option value="{{this}}" {{sel this ../f.role}}>{{rol this}}</option>{{/each}}</select></div>
+  <div class="field"><label for="status">Holat</label><select id="status" name="status"><option value="">Hammasi</option><option value="1" {{sel '1' f.status}}>Faol</option><option value="0" {{sel '0' f.status}}>Bloklangan</option></select></div>
+  <div class="field"><label for="guruh">Guruh</label><select id="guruh" name="guruh"><option value="">Hammasi</option>{{#each guruhlar}}<option value="{{nomi}}" {{sel nomi ../f.guruh}}>{{nomi}}</option>{{/each}}</select></div>
+  <div class="field"><label for="kurs">Kurs</label><select id="kurs" name="kurs"><option value="">—</option>{{#each (range 1 6)}}<option value="{{this}}" {{sel this ../f.kurs}}>{{this}}</option>{{/each}}</select></div>
+  <div class="field"><label for="bolim">Bo'lim</label><select id="bolim" name="bolim"><option value="">Hammasi</option>{{#each bolimlar}}<option value="{{id}}" {{sel id ../f.bolim}}>{{label}}</option>{{/each}}</select></div>
+  <div class="field"><label for="size">Sahifada</label><select id="size" name="size"><option value="25" {{sel 25 size}}>25</option><option value="50" {{sel 50 size}}>50</option><option value="100" {{sel 100 size}}>100</option></select></div>
+  <div><button class="btn-primary" type="submit">Qidirish</button></div>
+</form>
+
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>FIO</th><th>Login</th><th>Rol</th><th>Telefon</th><th>Qo'shimcha</th><th>Holat</th><th></th></tr></thead>
+  <tbody>
+  {{#each rows}}
+    <tr class="{{#unless status}}off{{/unless}}">
+      <td data-l="FIO"><a href="/admin/users/{{id}}">{{fio this}}</a></td>
+      <td data-l="Login">{{login}}</td>
+      <td data-l="Rol"><span class="badge b-role">{{rol role}}</span></td>
+      <td data-l="Telefon" class="nowrap">{{phone}}</td>
+      <td data-l="Qo'shimcha">{{#if (eq role 'student')}}{{guruh}} · {{kurs}}-kurs{{else}}{{asosiy_bolim}}{{#if asosiy_lavozim}} — {{asosiy_lavozim}}{{/if}}{{/if}}</td>
+      <td data-l="Holat">{{#if status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Bloklangan</span>{{/if}}</td>
+      <td class="actions"><a class="btn btn-sm" href="/admin/users/{{id}}/edit">Tahrirlash</a></td>
+    </tr>
+  {{else}}
+    <tr><td colspan="7" class="empty">Hech kim topilmadi</td></tr>
+  {{/each}}
+  </tbody>
+</table>
+</div></div>
+<div class="pager">
+  <span class="muted">{{page}} / {{pages}}</span>
+  {{#if prev}}<a class="btn btn-sm" href="{{qs '/admin/users' q=f.q role=f.role status=f.status guruh=f.guruh kurs=f.kurs bolim=f.bolim size=size page=prev}}">← Oldingi</a>{{/if}}
+  {{#if next}}<a class="btn btn-sm" href="{{qs '/admin/users' q=f.q role=f.role status=f.status guruh=f.guruh kurs=f.kurs bolim=f.bolim size=size page=next}}">Keyingi →</a>{{/if}}
+</div>

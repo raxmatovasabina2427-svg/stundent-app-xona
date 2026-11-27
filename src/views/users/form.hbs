@@ -1,0 +1,65 @@
+<div class="head"><h1>{{title}}</h1>{{#unless isNew}}<a class="btn" href="/admin/users/{{u.id}}">← Profil</a>{{/unless}}</div>
+<form class="card" method="post" action="{{#if isNew}}/admin/users{{else}}/admin/users/{{u.id}}{{/if}}" data-once>
+  {{> csrf}}
+  <div class="row">
+    <div class="field"><label for="familiya">Familiya</label><input type="text" id="familiya" name="familiya" value="{{u.familiya}}" required maxlength="100">{{> err msg=errors.familiya}}</div>
+    <div class="field"><label for="ism">Ism</label><input type="text" id="ism" name="ism" value="{{u.ism}}" required maxlength="100">{{> err msg=errors.ism}}</div>
+    <div class="field"><label for="ochestva">Otasining ismi</label><input type="text" id="ochestva" name="ochestva" value="{{u.ochestva}}" maxlength="100"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="login">Login</label><input type="text" id="login" name="login" value="{{u.login}}" required maxlength="100" autocapitalize="none">{{> err msg=errors.login}}</div>
+    <div class="field"><label for="parol">{{#if isNew}}Vaqtinchalik parol{{else}}Yangi parol{{/if}}</label>
+      <input type="text" id="parol" name="parol" {{#if isNew}}required minlength="8"{{/if}} autocomplete="off">
+      <div class="hint">{{#if isNew}}Kamida 8 belgi. Birinchi kirishda almashtirish so'raladi.{{else}}Bo'sh qoldirsangiz parol o'zgarmaydi. Kiritilsa — vaqtinchalik parol bo'ladi.{{/if}}</div>
+      {{> err msg=errors.parol}}</div>
+    <div class="field"><label for="phone">Telefon</label><input type="tel" id="phone" name="phone" value="{{u.phone}}" placeholder="+998901234567">{{> err msg=errors.phone}}</div>
+  </div>
+  <div class="field">
+    <label for="role">Rol</label>
+    <select id="role" name="role" {{#if isSelf}}disabled{{/if}}>
+      {{#each roles}}<option value="{{this}}" {{sel this ../u.role}}>{{rol this}}</option>{{/each}}
+      {{#unless (includes roles u.role)}}{{#if u.role}}<option value="{{u.role}}" selected>{{rol u.role}}</option>{{/if}}{{/unless}}
+    </select>
+    {{#if isSelf}}<input type="hidden" name="role" value="{{u.role}}"><div class="hint">O'z rolingizni o'zgartira olmaysiz</div>{{/if}}
+    {{#unless isNew}}<div class="hint">Diqqat: rol o'zgarsa, eski rolga tegishli ma'lumotlar (guruh, tyutor guruhlari, lavozim) o'chadi. Talaba ↔ xodim almashtirib bo'lmaydi.</div>{{/unless}}
+    {{> err msg=errors.role}}
+  </div>
+
+  <fieldset data-for="student">
+    <legend>Talaba</legend>
+    <div class="row">
+      <div class="field"><label for="guruh">Guruh</label>
+        <select id="guruh" name="guruh"><option value="">— tanlang —</option>{{#each guruhlar}}<option value="{{nomi}}" {{sel nomi ../u.guruh}}>{{nomi}} ({{fakultet}})</option>{{/each}}</select>
+        {{#unless guruhlar.length}}<div class="hint">Avval <a href="/admin/guruhlar">guruh</a> qo'shing</div>{{/unless}}
+        {{> err msg=errors.guruh}}</div>
+      <div class="field"><label for="kurs">Kurs</label><select id="kurs" name="kurs"><option value="">—</option>{{#each (range 1 6)}}<option value="{{this}}" {{sel this ../u.kurs}}>{{this}}</option>{{/each}}</select>{{> err msg=errors.kurs}}</div>
+    </div>
+  </fieldset>
+
+  {{#if isNew}}
+  <fieldset data-for="dekanat teacher tyutor xodim">
+    <legend>Asosiy bo'lim</legend>
+    <div class="row">
+      <div class="field"><label for="bolim_id">Bo'lim</label>
+        <select id="bolim_id" name="bolim_id"><option value="">— tanlang —</option>{{#each bolimlar}}<option value="{{id}}" {{sel id ../u.bolim_id}}>{{label}}</option>{{/each}}</select>
+        <div class="hint">Qo'shimcha bo'limlarni profil sahifasida biriktirasiz</div>
+        {{> err msg=errors.bolim_id}}</div>
+      <div class="field" data-for="teacher tyutor xodim"><label for="lavozim_x">Bo'limdagi lavozim</label><input type="text" id="lavozim_x" name="lavozim" value="{{u.lavozim}}" maxlength="150" placeholder="masalan: dotsent, inspektor"></div>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  <fieldset data-for="dekanat">
+    <legend>Dekanat</legend>
+    <div class="field"><label for="lavozim">Lavozim (unvon)</label><input type="text" id="lavozim" name="lavozim" value="{{#if u.unvon}}{{u.unvon}}{{else}}{{u.lavozim}}{{/if}}" maxlength="150" placeholder="masalan: dekan o'rinbosari"></div>
+  </fieldset>
+
+  <fieldset data-for="tyutor">
+    <legend>Tyutor guruhlari</legend>
+    <div class="multi">
+      {{#each guruhlar}}<label class="check"><input type="checkbox" name="tyutor_guruhlar" value="{{nomi}}" {{#if (includes ../u.tyutor_guruhlar nomi)}}checked{{/if}}> {{nomi}}</label>{{else}}<span class="muted">Guruhlar yo'q</span>{{/each}}
+    </div>
+  </fieldset>
+
+  <button class="btn-primary btn-lg" type="submit">Saqlash</button>
+</form>

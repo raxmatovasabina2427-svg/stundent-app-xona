@@ -1,0 +1,5 @@
+<div class="card empty">
+  <h1>{{#if (eq status 404)}}Topilmadi{{else if (eq status 403)}}Ruxsat yo'q{{else if (eq status 409)}}Amalni bajarib bo'lmadi{{else if (eq status 400)}}Xato so'rov{{else}}Xatolik{{/if}}</h1>
+  <p>{{message}}</p>
+  <p><a class="btn" href="/">Bosh sahifaga</a></p>
+</div>

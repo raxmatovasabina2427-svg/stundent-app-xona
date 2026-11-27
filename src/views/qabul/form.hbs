@@ -1,0 +1,28 @@
+<div class="head"><div><h1>{{title}}</h1><span class="muted">{{xodim.familiya}} {{xodim.ism}}</span></div><a class="btn" href="/qabul?xodim={{xodim.id}}">← Ro'yxat</a></div>
+{{#if kelgusi}}<div class="alert warn">Bu qabulga {{kelgusi}} ta kelgusi navbat bor: kun, vaqt va slotni o'zgartirib bo'lmaydi, maksimal navbatni faqat oshirish mumkin.</div>{{/if}}
+{{#unless bolimlar.length}}<div class="alert err">Xodim hech qaysi bo'limga biriktirilmagan. Avval bo'limga biriktiring.</div>{{/unless}}
+<form class="card" method="post" action="{{#if isNew}}/qabul{{else}}/qabul/{{q.id}}{{/if}}" data-capacity>
+  {{> csrf}}
+  <input type="hidden" name="xodim_id" value="{{xodim.id}}">
+  <div class="row">
+    <div class="field"><label for="bolim_id">Qaysi bo'lim nomidan</label>
+      <select id="bolim_id" name="bolim_id" required>{{#each bolimlar}}<option value="{{id}}" {{sel id ../q.bolim_id}}>{{nomi}}{{#if asosiy}} (asosiy){{/if}}</option>{{/each}}</select>{{> err msg=errors.bolim_id}}</div>
+    <div class="field"><label for="hafta_kuni">Hafta kuni</label>
+      <select id="hafta_kuni" name="hafta_kuni">{{#each kunlar}}<option value="{{this}}" {{sel this ../q.hafta_kuni}}>{{kun this}}</option>{{/each}}</select>{{> err msg=errors.hafta_kuni}}</div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="start_time">Boshlanish</label><input type="time" id="start_time" name="start_time" value="{{q.start_time}}" required>{{> err msg=errors.start_time}}</div>
+    <div class="field"><label for="end_time">Tugash</label><input type="time" id="end_time" name="end_time" value="{{q.end_time}}" max="23:59" required>{{> err msg=errors.end_time}}</div>
+  </div>
+  <fieldset>
+    <legend>Navbat rejimi</legend>
+    <label class="check"><input type="radio" name="rejim" value="slot" {{#unless (eq q.rejim 'jonli')}}checked{{/unless}}> Aniq vaqtli slotlar — har talabaga vaqt beriladi</label>
+    <label class="check"><input type="radio" name="rejim" value="jonli" {{#if (eq q.rejim 'jonli')}}checked{{/if}}> Jonli navbat — vaqtsiz, faqat tartib raqami</label>
+  </fieldset>
+  <div class="row">
+    <div class="field" data-slot-field><label for="slot_min">Slot uzunligi (daqiqa)</label><input type="number" id="slot_min" name="slot_min" value="{{q.slot_min}}" min="5" max="240" step="5">{{> err msg=errors.slot_min}}</div>
+    <div class="field"><label for="max_navbat">Maksimal navbat</label><input type="number" id="max_navbat" name="max_navbat" value="{{q.max_navbat}}" min="1" max="500" required>{{> err msg=errors.max_navbat}}</div>
+  </div>
+  <div class="alert info"><b>Sig'im:</b> <span data-capacity-out>—</span></div>
+  <button class="btn-primary btn-lg" type="submit" {{#unless bolimlar.length}}disabled{{/unless}}>Saqlash</button>
+</form>

@@ -1,0 +1,19 @@
+<div class="head"><div><h1>Assalomu alaykum, {{me.ism}}!</h1>
+  {{#if si}}<span class="muted">{{si.guruh}} guruhi · {{si.kurs}}-kurs</span>{{/if}}</div></div>
+
+<a class="btn btn-primary btn-lg btn-block big-cta" href="/navbat/yangi">
+  Navbatga yozilish
+</a>
+<p class="muted center mt">Dekanat, kafedra yoki bo'lim xodimi qabuliga onlayn navbat oling</p>
+
+<h2 class="mt">Kelgusi navbatlarim</h2>
+{{#each kelgusi}}
+  <a class="choice {{#if @first}}next-card{{/if}}" href="/navbat/{{id}}">
+    <div class="spread"><b>№{{navbat_raqami}} · {{sana sana}} · {{vaqt boshlanish tugash}}</b>{{> badge s=status}}</div>
+    <small>{{bolim}}{{#if xona}}, {{xona}}-xona{{/if}} — {{x_familiya}} {{x_ism}}</small>
+    {{#if murojaat}}<small>{{murojaat}}</small>{{/if}}
+  </a>
+{{else}}
+  <div class="card empty">Hozircha faol navbatingiz yo'q.</div>
+{{/each}}
+{{#if kelgusi.length}}<p class="mt"><a href="/navbatlarim">Barcha navbatlarim →</a></p>{{/if}}

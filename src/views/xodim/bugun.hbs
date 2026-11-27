@@ -1,0 +1,28 @@
+<div class="head"><div><h1>Bugungi navbat</h1><span class="muted">{{sana bugun}}</span></div>
+  <div class="actions"><a class="btn" href="/xodim/navbatlar">Kelgusi navbatlar</a><a class="btn" href="/istisno">Qabul qilmayman (istisno)</a></div></div>
+
+<div class="grid stats">
+  <div class="stat blue"><b>{{stat.jami}}</b><span>Jami</span></div>
+  <div class="stat green"><b>{{stat.qabul}}</b><span>Qabul qilindi</span></div>
+  <div class="stat"><b>{{stat.kutilmoqda}}</b><span>Kutilmoqda</span></div>
+  <div class="stat gray"><b>{{stat.kelmadi}}</b><span>Kelmadi</span></div>
+</div>
+
+{{#if keyingi}}
+<section class="card next-card mt">
+  <div class="spread">
+    <div><small class="muted">Keyingi talaba</small><h2 class="mb0">№{{keyingi.navbat_raqami}} · {{keyingi.familiya}} {{keyingi.ism}}</h2>
+      <small>{{#if keyingi.boshlanish}}{{keyingi.boshlanish}} · {{/if}}{{keyingi.murojaat}}{{#if keyingi.guruh}} · {{keyingi.guruh}}{{/if}}</small></div>
+    <a class="btn btn-primary" href="/navbat/{{keyingi.id}}">Ochish</a>
+  </div>
+</section>
+{{/if}}
+
+<div class="card flush mt"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>№</th><th>Vaqt</th><th>Talaba</th><th>Murojaat</th><th>Holat</th><th></th></tr></thead>
+  <tbody>
+  {{#each rows}}{{> navbat-row this}}{{else}}<tr><td colspan="6" class="empty">Bugun navbatlar yo'q</td></tr>{{/each}}
+  </tbody>
+</table></div></div>
+<p class="muted">Holat o'zgarishlari sahifani qayta yuklamasdan saqlanadi. Statistika sahifani yangilaganda yangilanadi.</p>

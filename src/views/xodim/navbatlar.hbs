@@ -1,0 +1,21 @@
+<div class="head"><div><h1>Navbatlar</h1><span class="muted">{{sana f.dan}} — {{sana f.gacha}} · {{ozgarish}} ta</span></div></div>
+<form class="card filters" method="get" action="/xodim/navbatlar">
+  <div class="field"><label for="dan">Sanadan</label><input type="date" id="dan" name="dan" value="{{f.dan}}"></div>
+  <div class="field"><label for="gacha">Sanagacha</label><input type="date" id="gacha" name="gacha" value="{{f.gacha}}"></div>
+  <div class="field"><label for="status">Holat</label><select id="status" name="status"><option value="">Hammasi</option>
+    <option value="kutilmoqda" {{sel 'kutilmoqda' f.status}}>Kutilmoqda</option><option value="tasdiqlandi" {{sel 'tasdiqlandi' f.status}}>Tasdiqlandi</option>
+    <option value="qabul_qilindi" {{sel 'qabul_qilindi' f.status}}>Qabul qilindi</option><option value="kelmadi" {{sel 'kelmadi' f.status}}>Kelmadi</option>
+    <option value="rad_etildi" {{sel 'rad_etildi' f.status}}>Rad etildi</option><option value="bekor_qilindi" {{sel 'bekor_qilindi' f.status}}>Bekor qilindi</option></select></div>
+  {{#if manager}}
+  <div class="field"><label for="xodim">Xodim</label><select id="xodim" name="xodim"><option value="">{{#if isStaffUser}}Men{{else}}Hammasi{{/if}}</option>{{#each xodimlar}}<option value="{{id}}" {{sel id ../f.xodim}}>{{familiya}} {{ism}}</option>{{/each}}</select></div>
+  {{#if isStaffUser}}<label class="check"><input type="checkbox" name="hammasi" value="1" {{chk f.hammasi}}> Butun fakultet</label>{{/if}}
+  {{/if}}
+  <div><button class="btn-primary" type="submit">Ko'rsatish</button></div>
+</form>
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>№</th><th>Sana</th><th>Vaqt</th><th>Talaba</th><th>Murojaat</th><th>Holat</th><th></th></tr></thead>
+  <tbody>
+  {{#each rows}}{{> navbat-row this showSana=true}}{{else}}<tr><td colspan="7" class="empty">Navbatlar topilmadi</td></tr>{{/each}}
+  </tbody>
+</table></div></div>

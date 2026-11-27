@@ -1,0 +1,17 @@
+<div class="head"><div><h1>Bo'limlar</h1><span class="muted">Universitet tashkiliy tuzilmasi</span></div>
+  {{#if nav.admin}}<div class="actions"><a class="btn btn-primary" href="/admin/bolimlar/new">+ Yangi bo'lim</a></div>{{/if}}</div>
+<div class="card flush">
+  <ul class="tree">
+    {{#each bolimlar}}
+    <li class="{{#unless status}}off muted{{/unless}}">
+      <div class="t-name">
+        <a href="/bolimlar/{{id}}" class="lvl-{{depth}}"><b>{{nomi}}</b></a>
+        <span class="badge b-off">{{turi turi}}</span>
+        {{#if xona}}<small class="muted">{{xona}}-xona</small>{{/if}}
+        {{#unless status}}<span class="badge b-off">nofaol</span>{{/unless}}
+      </div>
+      {{#if ../nav.admin}}<div class="nowrap"><a class="btn btn-sm" href="/admin/bolimlar/new?parent={{id}}">+ Ichki</a> <a class="btn btn-sm" href="/admin/bolimlar/{{id}}/edit">Tahrirlash</a></div>{{/if}}
+    </li>
+    {{else}}<li class="empty">Bo'limlar hali kiritilmagan</li>{{/each}}
+  </ul>
+</div>

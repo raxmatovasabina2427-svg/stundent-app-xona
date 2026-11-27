@@ -1,0 +1,28 @@
+<div id="slot-list">
+{{#if hech}}
+  <p class="empty">Bu sanada bo'sh joy qolmadi. Boshqa sanani tanlang.</p>
+{{else}}
+  {{#each groups}}
+  <div class="slot-group">
+    <h3>{{familiya}} {{ism}} <small class="muted">· {{bolim}}{{#if xona}}, {{xona}}-xona{{/if}} · <span class="mono">{{start_time}}–{{end_time}}</span></small></h3>
+    {{#if jonli}}
+      {{#if keyingi}}
+        <label class="check"><input type="radio" name="slot" value="{{qabul_vaqti_id}}:0" required {{#if (eq ../groups.length 1)}}checked{{/if}}>
+          Jonli navbat — sizning raqamingiz: <b>№{{keyingi}}</b> ({{bosh}} joy qoldi). Qabul oralig'ida keling.</label>
+      {{else}}<p class="muted">Joy qolmadi</p>{{/if}}
+    {{else}}
+      <div class="slots" role="radiogroup" aria-label="Bo'sh vaqtlar">
+        {{#each slots}}
+          {{#if mavjud}}
+            <label class="slot"><input type="radio" name="slot" value="{{../qabul_vaqti_id}}:{{navbat_raqami}}" required><span>{{boshlanish}}</span></label>
+          {{else}}
+            <span class="slot busy" title="{{#if band}}Band{{else}}Yozilish yopilgan{{/if}}"><span>{{boshlanish}}</span></span>
+          {{/if}}
+        {{/each}}
+      </div>
+      <small class="muted">{{bosh}} ta bo'sh · {{slot_min}} daqiqadan</small>
+    {{/if}}
+  </div>
+  {{/each}}
+{{/if}}
+</div>

@@ -1,0 +1,25 @@
+<tr id="nav-{{id}}" class="{{#if (eq status 'bekor_qilindi')}}off{{/if}}">
+  <td data-l="№" class="mono"><b>{{navbat_raqami}}</b></td>
+  {{#if showSana}}<td data-l="Sana" class="nowrap">{{sana this.sana}}</td>{{/if}}
+  <td data-l="Vaqt" class="mono nowrap">{{#if boshlanish}}{{boshlanish}}–{{tugash}}{{else}}jonli{{/if}}</td>
+  <td data-l="Talaba"><a href="/navbat/{{id}}">{{familiya}} {{ism}}</a>{{#if guruh}}<br><small class="muted">{{guruh}} · {{kurs}}-kurs</small>{{/if}}</td>
+  <td data-l="Murojaat">{{murojaat}}{{#if mavzu}}<br><small class="muted">{{mavzu}}</small>{{/if}}{{#if javob_izoh}}<br><small>💬 {{javob_izoh}}</small>{{/if}}</td>
+  <td data-l="Holat">{{> badge s=status}}</td>
+  <td class="actions">
+    {{#each actions}}
+      {{#if izoh}}
+        <details class="act"><summary class="btn btn-sm {{cls}}">{{label}}</summary>
+          <form hx-post="/navbat/{{../id}}/holat" hx-target="#nav-{{../id}}" hx-swap="outerHTML" method="post" action="/navbat/{{../id}}/holat">
+            {{> csrf}}<input type="hidden" name="status" value="{{to}}"><input type="hidden" name="showSana" value="{{#if ../showSana}}1{{/if}}">
+            <div class="field"><label>Sabab (majburiy)</label><textarea name="izoh" required maxlength="2000"></textarea></div>
+            <button class="btn-red btn-sm" type="submit">{{label}}</button>
+          </form></details>
+      {{else}}
+        <form hx-post="/navbat/{{../id}}/holat" hx-target="#nav-{{../id}}" hx-swap="outerHTML" method="post" action="/navbat/{{../id}}/holat">
+          {{> csrf}}<input type="hidden" name="status" value="{{to}}"><input type="hidden" name="showSana" value="{{#if ../showSana}}1{{/if}}">
+          <button class="btn-sm {{cls}}" type="submit">{{label}}</button>
+        </form>
+      {{/if}}
+    {{/each}}
+  </td>
+</tr>

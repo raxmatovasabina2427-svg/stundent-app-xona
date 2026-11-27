@@ -1,0 +1,23 @@
+<div class="head"><h1>Murojaat turlari</h1>
+  <div class="actions"><a class="btn btn-primary" href="/admin/murojaat-turlari/new{{#if bolim}}?bolim={{bolim}}{{/if}}">+ Yangi tur</a></div></div>
+<form class="card filters" method="get">
+  <div class="field"><label for="bolim">Bo'lim</label><select id="bolim" name="bolim"><option value="">Hammasi</option>{{#each bolimlar}}<option value="{{id}}" {{sel id ../bolim}}>{{label}}</option>{{/each}}</select></div>
+  <div><button type="submit">Ko'rsatish</button></div>
+</form>
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>Bo'lim</th><th>Nomi</th><th>Kerakli hujjatlar</th><th>Ishlatilgan</th><th>Holat</th><th></th></tr></thead>
+  <tbody>
+  {{#each turlar}}
+  <tr class="{{#unless status}}off{{/unless}}">
+    <td data-l="Bo'lim">{{bolim}}</td>
+    <td data-l="Nomi"><b>{{nomi}}</b>{{#if tavsif}}<br><small class="muted">{{tavsif}}</small>{{/if}}</td>
+    <td data-l="Hujjatlar">{{kerakli_hujjatlar}}</td>
+    <td data-l="Ishlatilgan">{{ishlatilgan}}</td>
+    <td data-l="Holat">{{#if status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Nofaol</span>{{/if}}</td>
+    <td class="actions"><a class="btn btn-sm" href="/admin/murojaat-turlari/{{id}}/edit">Tahrirlash</a>
+      <form method="post" action="/admin/murojaat-turlari/{{id}}/delete" data-confirm="O'chirilsinmi?">{{> csrf}}<button class="btn-sm btn-red" type="submit">O'chirish</button></form></td>
+  </tr>
+  {{else}}<tr><td colspan="6" class="empty">Murojaat turlari yo'q</td></tr>{{/each}}
+  </tbody>
+</table></div></div>

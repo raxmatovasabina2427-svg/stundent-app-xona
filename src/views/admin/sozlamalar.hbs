@@ -1,0 +1,22 @@
+<div class="head"><div><h1>Tizim sozlamalari</h1><span class="muted">Navbat qoidalari (BR-01…BR-08)</span></div>
+  <div class="actions"><a class="btn" href="/admin/bayramlar">Bayramlar</a></div></div>
+<form class="card" method="post" action="/admin/sozlamalar">
+  {{> csrf}}
+  <h2>Yozilish</h2>
+  <div class="row">
+    <div class="field"><label for="yozilish_oynasi_kun">Yozilish oynasi (kun)</label><input type="number" id="yozilish_oynasi_kun" name="yozilish_oynasi_kun" value="{{s.yozilish_oynasi_kun}}" min="1" max="90"><div class="hint">Talaba necha kun oldinga yozila oladi</div></div>
+    <div class="field"><label for="bugun_yopilish_daq">Bugungi yozilish yopilishi (daqiqa)</label><input type="number" id="bugun_yopilish_daq" name="bugun_yopilish_daq" value="{{s.bugun_yopilish_daq}}" min="0" max="240"><div class="hint">Slot boshlanishidan necha daqiqa oldin yopiladi</div></div>
+    <div class="field"><label for="max_faol_bron">Maksimal faol navbatlar</label><input type="number" id="max_faol_bron" name="max_faol_bron" value="{{s.max_faol_bron}}" min="1" max="20"></div>
+    <div class="field"><label for="bekor_muddati_soat">Bekor qilish muddati (soat)</label><input type="number" id="bekor_muddati_soat" name="bekor_muddati_soat" value="{{s.bekor_muddati_soat}}" min="0" max="72"><div class="hint">Qabuldan necha soat oldingacha talaba bekor qila oladi</div></div>
+  </div>
+  <div class="field"><label for="tasdiqlash_rejimi">Tasdiqlash rejimi</label>
+    <select id="tasdiqlash_rejimi" name="tasdiqlash_rejimi"><option value="avto" {{sel 'avto' s.tasdiqlash_rejimi}}>Avtomatik — navbat darhol tasdiqlanadi</option><option value="qolda" {{sel 'qolda' s.tasdiqlash_rejimi}}>Qo'lda — xodim tasdiqlaydi</option></select></div>
+  <h2 class="mt">Kelmaganlik cheklovi</h2>
+  <label class="check"><input type="checkbox" name="kelmadi_jazo" value="1" {{chk s.kelmadi_jazo}}> Yoqilgan</label>
+  <div class="row mt">
+    <div class="field"><label for="kelmadi_chegara">Necha marta kelmasa</label><input type="number" id="kelmadi_chegara" name="kelmadi_chegara" value="{{s.kelmadi_chegara}}" min="1" max="20"></div>
+    <div class="field"><label for="kelmadi_davr_kun">Davr (kun)</label><input type="number" id="kelmadi_davr_kun" name="kelmadi_davr_kun" value="{{s.kelmadi_davr_kun}}" min="1" max="365"></div>
+    <div class="field"><label for="kelmadi_taqiq_kun">Yozilish taqiqi (kun)</label><input type="number" id="kelmadi_taqiq_kun" name="kelmadi_taqiq_kun" value="{{s.kelmadi_taqiq_kun}}" min="1" max="90"></div>
+  </div>
+  <button class="btn-primary" type="submit">Saqlash</button>
+</form>

@@ -1,0 +1,25 @@
+<div class="head"><h1>Parolni o'zgartirish</h1></div>
+{{#if majburiy}}<div class="alert warn">Siz vaqtinchalik parol bilan kirdingiz. Davom etish uchun yangi parol o'rnating.</div>{{/if}}
+<form class="card" method="post" action="/profil/parol" data-once>
+  {{> csrf}}
+  <div class="field">
+    <label for="eski">Joriy parol</label>
+    <input type="password" id="eski" name="eski" autocomplete="current-password" required>
+    {{> err msg=errors.eski}}
+  </div>
+  <div class="row">
+    <div class="field">
+      <label for="yangi">Yangi parol</label>
+      <input type="password" id="yangi" name="yangi" autocomplete="new-password" minlength="8" required>
+      <div class="hint">Kamida 8 belgi</div>
+      {{> err msg=errors.yangi}}
+    </div>
+    <div class="field">
+      <label for="yangi2">Yangi parol (takror)</label>
+      <input type="password" id="yangi2" name="yangi2" autocomplete="new-password" minlength="8" required>
+      {{> err msg=errors.yangi2}}
+    </div>
+  </div>
+  <button class="btn-primary" type="submit">Saqlash</button>
+  <p class="muted mt mb0">Saqlangach boshqa qurilmalardagi sessiyalaringiz yopiladi.</p>
+</form>

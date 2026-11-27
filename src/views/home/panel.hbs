@@ -1,0 +1,36 @@
+<div class="head"><div><h1>Panel</h1><span class="muted">{{#if fakultet}}{{fakultet}} · {{/if}}bugun, {{sana bugun}}</span></div>
+  <div class="actions"><a class="btn" href="/xodim/navbatlar?hammasi=1">Barcha navbatlar</a>{{#if nav.staff}}<a class="btn btn-primary" href="/xodim/bugun">Mening bugungi navbatim</a>{{/if}}</div></div>
+{{#if noScope}}<div class="alert warn">Sizga asosiy bo'lim (fakultet) biriktirilmagan — ma'lumotlar ko'rinmaydi. Administratorga murojaat qiling.</div>{{/if}}
+
+<div class="grid stats">
+  <div class="stat blue"><b>{{stat.jami}}</b><span>Bugungi navbatlar</span></div>
+  <div class="stat green"><b>{{stat.qabul}}</b><span>Qabul qilindi</span></div>
+  <div class="stat"><b>{{stat.kutilmoqda}}</b><span>Kutilmoqda</span></div>
+  <div class="stat gray"><b>{{stat.kelmadi}}</b><span>Kelmadi</span></div>
+  <div class="stat red"><b>{{stat.bekor}}</b><span>Bekor qilingan</span></div>
+</div>
+
+<div class="grid two mt">
+  <section class="card">
+    <h2>Bugun eng band xodimlar</h2>
+    {{#if band.length}}
+      <table><tbody>{{#each band}}<tr><td><a href="/xodim/navbatlar?xodim={{id}}">{{familiya}} {{ism}}</a><br><small>{{bolim}}</small></td><td class="mono">{{n}} ta</td></tr>{{/each}}</tbody></table>
+    {{else}}<p class="muted">Bugun navbatlar yo'q.</p>{{/if}}
+  </section>
+  <section class="card">
+    <h2>Umumiy</h2>
+    <dl class="kv">
+      <dt>Talabalar</dt><dd><a href="/admin/users?role=student">{{cnt.talabalar}}</a></dd>
+      <dt>Xodimlar</dt><dd>{{cnt.xodimlar}}</dd>
+      <dt>Kelgusi navbatlar</dt><dd>{{cnt.kelgusi}}</dd>
+    </dl>
+  </section>
+</div>
+
+{{#if jadvalsiz.length}}
+<section class="card">
+  <h2>Qabul jadvali kiritilmagan xodimlar</h2>
+  <p class="muted">Bu xodimlarga talabalar yozila olmaydi.</p>
+  <ul>{{#each jadvalsiz}}<li><a href="/qabul?xodim={{id}}">{{familiya}} {{ism}}</a> <small>({{rol role}})</small></li>{{/each}}</ul>
+</section>
+{{/if}}

@@ -1,0 +1,6 @@
+.xona-bron-note { margin: .75rem 0; }
+.xona-bron-card-meta { display: flex; flex-wrap: wrap; gap: .75rem; color: var(--muted, #667085); }
+.xona-bron-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+@media (max-width: 600px) {
+  .xona-bron-actions form, .xona-bron-actions .btn { width: 100%; }
+}

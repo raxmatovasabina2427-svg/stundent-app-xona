@@ -1,0 +1,13 @@
+<div class="head"><h1>{{title}}</h1><a class="btn" href="/admin/murojaat-turlari">← Ro'yxat</a></div>
+<form class="card" method="post" action="{{#if isNew}}/admin/murojaat-turlari{{else}}/admin/murojaat-turlari/{{t.id}}{{/if}}">
+  {{> csrf}}
+  <div class="row">
+    <div class="field"><label for="bolim_id">Bo'lim</label><select id="bolim_id" name="bolim_id" required><option value="">— tanlang —</option>{{#each bolimlar}}<option value="{{id}}" {{sel id ../t.bolim_id}}>{{label}}</option>{{/each}}</select>{{> err msg=errors.bolim_id}}</div>
+    <div class="field"><label for="nomi">Nomi</label><input type="text" id="nomi" name="nomi" value="{{t.nomi}}" required maxlength="200" placeholder="Ma'lumotnoma olish">{{> err msg=errors.nomi}}</div>
+  </div>
+  <div class="field"><label for="tavsif">Tavsif</label><textarea id="tavsif" name="tavsif" maxlength="2000">{{t.tavsif}}</textarea></div>
+  <div class="field"><label for="kerakli_hujjatlar">Kerakli hujjatlar</label><textarea id="kerakli_hujjatlar" name="kerakli_hujjatlar" maxlength="2000" placeholder="Pasport nusxasi, talabalik guvohnomasi">{{t.kerakli_hujjatlar}}</textarea>
+    <div class="hint">Talabaga chiptada ko'rsatiladi</div></div>
+  <label class="check"><input type="checkbox" name="status" value="1" {{chk t.status}}> Faol</label>
+  <button class="btn-primary mt" type="submit">Saqlash</button>
+</form>

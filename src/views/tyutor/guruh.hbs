@@ -1,0 +1,19 @@
+<div class="head"><h1>{{guruh}} guruhi</h1><a class="btn" href="/tyutor">← Guruhlarim</a></div>
+<section class="card flush">
+  <h2 class="card mb0">Talabalar ({{talabalar.length}})</h2>
+  <div class="table-wrap"><table class="stack">
+    <thead><tr><th>FIO</th><th>Kurs</th><th>Telefon</th><th>Telegram</th><th>Holat</th></tr></thead>
+    <tbody>{{#each talabalar}}<tr class="{{#unless status}}off{{/unless}}"><td data-l="FIO">{{fio this}}</td><td data-l="Kurs">{{kurs}}</td><td data-l="Telefon">{{phone}}</td>
+      <td data-l="Telegram">{{#if telegram}}ulangan{{else}}—{{/if}}</td><td data-l="Holat">{{#if status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Bloklangan</span>{{/if}}</td></tr>
+    {{else}}<tr><td colspan="5" class="empty">Talabalar yo'q</td></tr>{{/each}}</tbody>
+  </table></div>
+</section>
+<section class="card flush">
+  <h2 class="card mb0">Navbatlari (oxirgi 30 kun va kelgusi)</h2>
+  <div class="table-wrap"><table class="stack">
+    <thead><tr><th>Sana</th><th>Talaba</th><th>Kimga</th><th>Murojaat</th><th>Holat</th></tr></thead>
+    <tbody>{{#each navbatlar}}<tr><td data-l="Sana"><a href="/navbat/{{id}}">{{sana this.sana}}</a> <small class="mono">{{vaqt boshlanish tugash}}</small></td><td data-l="Talaba">{{familiya}} {{ism}}</td>
+      <td data-l="Kimga">{{x_familiya}} {{x_ism}} — {{bolim}}</td><td data-l="Murojaat">{{murojaat}}</td><td data-l="Holat">{{> badge s=status}}</td></tr>
+    {{else}}<tr><td colspan="5" class="empty">Navbatlar yo'q</td></tr>{{/each}}</tbody>
+  </table></div>
+</section>

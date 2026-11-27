@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="/p/xona_bron/app.css">
+<script src="/p/xona_bron/app.js" defer></script>
+<div class="head"><a href="/admin/xona_bron/resurslar" class="muted">← Xonalar</a><h1>{{title}}</h1></div>
+{{#if error}}<div class="alert err">{{error}}</div>{{/if}}
+<form class="card" method="post" action="{{#if resource}}/admin/xona_bron/resurslar/{{resource.id}}/tahrir{{else}}/admin/xona_bron/resurslar/yangi{{/if}}" data-once>{{> csrf}}
+<div class="field"><label for="nomi">Xona nomi</label><input id="nomi" name="nomi" maxlength="120" value="{{form.nomi}}" required></div>
+<div class="grid two">
+<div class="field"><label for="turi">Xona turi</label><select id="turi" name="turi" required><option value="kompyuter" {{sel form.turi 'kompyuter'}}>Kompyuter xonasi</option><option value="laboratoriya" {{sel form.turi 'laboratoriya'}}>Laboratoriya</option><option value="maruza" {{sel form.turi 'maruza'}}>Ma’ruza xonasi</option></select></div>
+<div class="field"><label for="sigim">Sig‘imi (kishi)</label><input id="sigim" name="sigim" type="number" min="1" max="1000" value="{{form.sigim}}" required></div>
+<div class="field"><label for="bino">Bino</label><input id="bino" name="bino" maxlength="100" value="{{form.bino}}"></div>
+<div class="field"><label for="qavat">Qavat</label><input id="qavat" name="qavat" type="number" min="0" max="100" value="{{form.qavat}}"></div>
+<div class="field"><label for="xona_raqami">Xona raqami</label><input id="xona_raqami" name="xona_raqami" maxlength="30" value="{{form.xona_raqami}}"></div>
+<div class="field"><label for="masul_bolim_id">Mas’ul bo‘lim</label><select id="masul_bolim_id" name="masul_bolim_id" {{#if isDekanat}}required{{/if}}>{{#unless isDekanat}}<option value="">— biriktirilmagan —</option>{{/unless}}{{#each bolimlar}}<option value="{{id}}" {{sel ../form.masul_bolim_id id}}>{{label}}</option>{{/each}}</select><small class="muted">Bronlarni shu bo‘lim dekanati tasdiqlaydi.</small></div>
+<div class="field"><label for="ish_boshlanish">Ish boshlanishi</label><input id="ish_boshlanish" name="ish_boshlanish" type="time" value="{{form.ish_boshlanish}}" required></div>
+<div class="field"><label for="ish_tugash">Ish tugashi</label><input id="ish_tugash" name="ish_tugash" type="time" value="{{form.ish_tugash}}" required></div>
+</div>
+<div class="field"><label for="jihozlar">Jihozlar va izoh</label><textarea id="jihozlar" name="jihozlar" rows="3" maxlength="2000">{{form.jihozlar}}</textarea></div>
+<button class="btn btn-primary" type="submit">Saqlash</button></form>

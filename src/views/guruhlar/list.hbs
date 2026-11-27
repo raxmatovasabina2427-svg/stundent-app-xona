@@ -1,0 +1,40 @@
+<div class="head"><div><h1>Guruhlar</h1><span class="muted">Talaba qaysi fakultetga tegishli ekani guruh orqali aniqlanadi</span></div></div>
+
+<form class="card" method="post" action="/admin/guruhlar">
+  {{> csrf}}
+  <h2>Yangi guruh</h2>
+  <div class="row">
+    <div class="field"><label for="nomi">Nomi</label><input type="text" id="nomi" name="nomi" maxlength="30" required placeholder="AT-21-01"></div>
+    <div class="field"><label for="kurs">Kurs</label><select id="kurs" name="kurs"><option value="">—</option>{{#each (range 1 6)}}<option value="{{this}}">{{this}}</option>{{/each}}</select></div>
+    <div class="field"><label for="fakultet_id">Fakultet</label><select id="fakultet_id" name="fakultet_id" required>{{#each fakultetlar}}<option value="{{id}}">{{nomi}}</option>{{/each}}</select>
+      {{#unless fakultetlar.length}}<div class="hint">Avval "Fakultet" turidagi bo'lim yarating</div>{{/unless}}</div>
+  </div>
+  <button class="btn-primary" type="submit">Qo'shish</button>
+</form>
+
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>Guruh</th><th>Kurs</th><th>Fakultet</th><th>Talabalar</th><th></th></tr></thead>
+  <tbody>
+  {{#each guruhlar}}
+  <tr>
+    <td data-l="Guruh"><b>{{nomi}}</b></td>
+    <td data-l="Kurs">{{kurs}}</td>
+    <td data-l="Fakultet">{{fakultet}}</td>
+    <td data-l="Talabalar"><a href="/admin/users?guruh={{nomi}}">{{talabalar}}</a></td>
+    <td class="actions">
+      <details class="act"><summary class="btn btn-sm">Tahrirlash</summary>
+        <form method="post" action="/admin/guruhlar/{{id}}">{{> csrf}}
+          <div class="field"><label>Nomi</label><input type="text" name="nomi" value="{{nomi}}" maxlength="30" required></div>
+          <div class="field"><label>Kurs</label><select name="kurs"><option value="">—</option>{{#each (range 1 6)}}<option value="{{this}}" {{sel this ../kurs}}>{{this}}</option>{{/each}}</select></div>
+          <div class="field"><label>Fakultet</label><select name="fakultet_id">{{#each ../fakultetlar}}<option value="{{id}}" {{sel id ../fakultet_id}}>{{nomi}}</option>{{/each}}</select></div>
+          <button class="btn-primary btn-sm" type="submit">Saqlash</button>
+        </form>
+      </details>
+      <form method="post" action="/admin/guruhlar/{{id}}/delete" data-confirm="{{nomi}} guruhi o'chirilsinmi?">{{> csrf}}<button class="btn-sm btn-red" type="submit">O'chirish</button></form>
+    </td>
+  </tr>
+  {{else}}<tr><td colspan="5" class="empty">Guruhlar yo'q</td></tr>{{/each}}
+  </tbody>
+</table>
+</div></div>

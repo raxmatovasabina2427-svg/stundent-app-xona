@@ -1,0 +1,66 @@
+<div class="head">
+  <div><h1>{{fio u}}</h1><span class="badge b-role">{{rol u.role}}</span> {{#if u.status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Bloklangan</span>{{/if}}</div>
+  {{#if canManage}}
+  <div class="actions">
+    <a class="btn" href="/admin/users/{{u.id}}/edit">Tahrirlash</a>
+    {{#unless isSelf}}
+    <form class="inline" method="post" action="/admin/users/{{u.id}}/status" data-confirm="{{#if u.status}}Bloklansinmi? Kelgusi faol navbatlari bekor qilinadi.{{else}}Faollashtirilsinmi?{{/if}}">{{> csrf}}
+      <button type="submit" class="{{#if u.status}}btn-red{{else}}btn-green{{/if}}">{{#if u.status}}Bloklash{{else}}Faollashtirish{{/if}}</button></form>
+    {{#if nav.admin}}<form class="inline" method="post" action="/admin/users/{{u.id}}/delete" data-confirm="Butunlay o'chirilsinmi? Bu amalni qaytarib bo'lmaydi.">{{> csrf}}<button type="submit" class="btn-red">O'chirish</button></form>{{/if}}
+    {{/unless}}
+  </div>
+  {{/if}}
+</div>
+
+<div class="grid two">
+  <section class="card">
+    <h2>Ma'lumotlar</h2>
+    <dl class="kv">
+      <dt>Login</dt><dd>{{u.login}}{{#if u.parol_almashtirish}} <small class="muted">(vaqtinchalik parol)</small>{{/if}}</dd>
+      <dt>Telefon</dt><dd>{{u.phone}}</dd>
+      {{#if (eq u.role 'student')}}<dt>Guruh</dt><dd>{{u.guruh}} · {{u.kurs}}-kurs</dd><dt>Fakultet</dt><dd>{{u.guruh_fakultet}}</dd>{{/if}}
+      {{#if u.unvon}}<dt>Lavozim</dt><dd>{{u.unvon}}</dd>{{/if}}
+      {{#if u.tyutor_guruhlar.length}}<dt>Tyutor guruhlari</dt><dd>{{#each u.tyutor_guruhlar}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</dd>{{/if}}
+      <dt>Telegram</dt><dd>{{#if u.tg_user}}Ulangan{{else}}—{{/if}}</dd>
+    </dl>
+  </section>
+
+  {{#if isStaffUser}}
+  <section class="card">
+    <h2>Bo'limlar</h2>
+    {{#each u.bolimlar}}
+      <div class="spread mb0">
+        <div><b>{{nomi}}</b> <small class="muted">{{turi turi}}</small>{{#if asosiy}} <span class="badge b-role">asosiy</span>{{/if}}<br><small>{{lavozim}}</small></div>
+        {{#if ../canManage}}<form class="inline" method="post" action="/admin/users/{{../u.id}}/bolimlar/{{id}}/delete" data-confirm="Biriktirish olib tashlansinmi?">{{> csrf}}<button class="btn-sm btn-red" type="submit">Olib tashlash</button></form>{{/if}}
+      </div><hr>
+    {{else}}<p class="muted">Bo'limga biriktirilmagan</p>{{/each}}
+    {{#if canManage}}
+    <form method="post" action="/admin/users/{{u.id}}/bolimlar">
+      {{> csrf}}
+      <div class="row">
+        <div class="field"><label for="bolim_id">Bo'lim</label><select id="bolim_id" name="bolim_id" required><option value="">— tanlang —</option>{{#each bolimOptions}}<option value="{{id}}">{{label}}</option>{{/each}}</select></div>
+        <div class="field"><label for="lavozim">Lavozim</label><input type="text" id="lavozim" name="lavozim" maxlength="150"></div>
+      </div>
+      <label class="check"><input type="checkbox" name="asosiy" value="1"> Asosiy bo'lim</label>
+      <button class="btn mt" type="submit">Biriktirish</button>
+    </form>
+    {{/if}}
+  </section>
+  {{/if}}
+</div>
+
+{{#if isStaffUser}}
+<section class="card">
+  <div class="spread"><h2 class="mb0">Qabul jadvali</h2>{{#if canManage}}<a class="btn btn-sm" href="/qabul?xodim={{u.id}}">Boshqarish</a>{{/if}}</div>
+  {{#each u.shablonlar}}<div class="{{#unless status}}muted{{/unless}}">{{kun hafta_kuni}}, <span class="mono">{{start_time}}–{{end_time}}</span> — {{bolim}}{{#unless status}} (nofaol){{/unless}}</div>{{else}}<p class="muted mt">Kiritilmagan</p>{{/each}}
+</section>
+{{/if}}
+
+{{#if u.navbatlar}}
+<section class="card flush">
+  <h2 class="card mb0">Navbatlar tarixi</h2>
+  <div class="table-wrap"><table class="stack"><thead><tr><th>Sana</th><th>Vaqt</th><th>Kimga</th><th>Murojaat</th><th>Holat</th></tr></thead><tbody>
+  {{#each u.navbatlar}}<tr><td data-l="Sana"><a href="/navbat/{{id}}">{{sana sana}}</a></td><td data-l="Vaqt" class="mono">{{vaqt boshlanish tugash}}</td><td data-l="Kimga">{{familiya}} {{ism}} — {{bolim}}</td><td data-l="Murojaat">{{murojaat}}</td><td data-l="Holat">{{> badge s=status}}</td></tr>{{/each}}
+  </tbody></table></div>
+</section>
+{{/if}}

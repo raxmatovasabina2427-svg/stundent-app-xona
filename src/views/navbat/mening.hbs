@@ -1,0 +1,17 @@
+<div class="head"><h1>Mening navbatlarim</h1><a class="btn btn-primary" href="/navbat/yangi">+ Navbatga yozilish</a></div>
+<div class="crumbs">
+  <a href="/navbatlarim" class="{{#if (eq tab 'kelgusi')}}b-role{{/if}}">Kelgusi</a>
+  <a href="/navbatlarim?tab=tarix" class="{{#if (eq tab 'tarix')}}b-role{{/if}}">Tarix</a>
+</div>
+<div class="choice-list">
+{{#each rows}}
+  <a class="choice" href="/navbat/{{id}}">
+    <div class="spread"><b>№{{navbat_raqami}} · {{sana sana}} · {{vaqt boshlanish tugash}}</b>{{> badge s=status}}</div>
+    <small>{{bolim}}{{#if xona}}, {{xona}}-xona{{/if}} — {{x_familiya}} {{x_ism}}</small>
+    {{#if murojaat}}<small>{{murojaat}}</small>{{/if}}
+    {{#if javob_izoh}}<small>💬 {{javob_izoh}}</small>{{/if}}
+  </a>
+{{else}}
+  <div class="card empty">{{#if (eq tab 'kelgusi')}}Kelgusi navbatlaringiz yo'q.{{else}}Tarix bo'sh.{{/if}}</div>
+{{/each}}
+</div>

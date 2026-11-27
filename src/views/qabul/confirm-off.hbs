@@ -1,0 +1,10 @@
+<div class="card">
+  <h1>Qabul vaqtini nofaol qilish</h1>
+  <p>{{kun q.hafta_kuni}}, <span class="mono">{{q.start_time}}–{{q.end_time}}</span> ({{q.bolim}}) qabuliga <b>{{n}} ta kelgusi navbat</b> bor.
+     Nofaol qilinsa, ular bekor qilinadi va talabalarga xabar yuboriladi.</p>
+  <form class="inline" method="post" action="/qabul/{{q.id}}/holat">
+    {{> csrf}}<input type="hidden" name="status" value="0"><input type="hidden" name="confirm" value="1">
+    <button class="btn-red" type="submit">Ha, nofaol qilish</button>
+  </form>
+  <a class="btn" href="/qabul?xodim={{q.xodim_id}}">Bekor qilish</a>
+</div>

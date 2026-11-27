@@ -1,0 +1,46 @@
+<div class="head"><div><h1>{{fio u}}</h1><span class="badge b-role">{{rol u.role}}</span></div>
+  <div class="actions"><a class="btn" href="/profil/parol">Parolni o'zgartirish</a></div></div>
+<div class="grid two">
+  <section class="card">
+    <h2>Ma'lumotlarim</h2>
+    <dl class="kv">
+      <dt>Login</dt><dd>{{u.login}}</dd>
+      <dt>Telefon</dt><dd>{{#if u.phone}}{{u.phone}}{{else}}<span class="muted">kiritilmagan</span>{{/if}}</dd>
+      {{#if (eq u.role 'student')}}
+        <dt>Guruh</dt><dd>{{u.guruh}}</dd>
+        <dt>Kurs</dt><dd>{{u.kurs}}</dd>
+        <dt>Fakultet</dt><dd>{{u.guruh_fakultet}}</dd>
+      {{/if}}
+      {{#if u.unvon}}<dt>Lavozim</dt><dd>{{u.unvon}}</dd>{{/if}}
+      {{#if u.bolimlar.length}}<dt>Bo'limlar</dt><dd>{{#each u.bolimlar}}<div>{{nomi}}{{#if lavozim}} — {{lavozim}}{{/if}}{{#if asosiy}} <span class="badge b-role">asosiy</span>{{/if}}</div>{{/each}}</dd>{{/if}}
+      {{#if u.tyutor_guruhlar.length}}<dt>Tyutor guruhlari</dt><dd>{{#each u.tyutor_guruhlar}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</dd>{{/if}}
+      <dt>Telegram</dt><dd>{{#if u.tg_user}}Ulangan{{else}}<span class="muted">Ulanmagan (bot keyingi bosqichda ishga tushadi)</span>{{/if}}</dd>
+    </dl>
+  </section>
+  <section class="card">
+    <h2>Telefon raqami</h2>
+    <form method="post" action="/profil/telefon">
+      {{> csrf}}
+      <div class="field">
+        <label for="phone">Telefon</label>
+        <input type="tel" id="phone" name="phone" value="{{u.phone}}" placeholder="+998901234567" inputmode="tel">
+        <div class="hint">Format: +998XXXXXXXXX</div>
+      </div>
+      <button class="btn-primary" type="submit">Saqlash</button>
+    </form>
+  </section>
+</div>
+{{#if u.shablonlar}}
+<section class="card flush">
+  <div class="card mb0 spread"><h2 class="mb0">Mening qabul jadvalim</h2><a class="btn btn-sm" href="/qabul">Boshqarish</a></div>
+  <div class="table-wrap"><table class="stack">
+    <thead><tr><th>Kun</th><th>Vaqt</th><th>Bo'lim</th><th>Slot</th><th>Holat</th></tr></thead>
+    <tbody>{{#each u.shablonlar}}<tr class="{{#unless status}}off{{/unless}}">
+      <td data-l="Kun">{{kun hafta_kuni}}</td><td data-l="Vaqt" class="mono">{{start_time}}–{{end_time}}</td>
+      <td data-l="Bo'lim">{{bolim}}{{#if xona}}, {{xona}}-xona{{/if}}</td>
+      <td data-l="Slot">{{#if slot_min}}{{slot_min}} daq · {{sigim this}} ta{{else}}Jonli · {{max_navbat}} ta{{/if}}</td>
+      <td data-l="Holat">{{#if status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Nofaol</span>{{/if}}</td>
+    </tr>{{/each}}</tbody>
+  </table></div>
+</section>
+{{/if}}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="htmx-config" content='{"includeIndicatorStyles":false,"allowEval":false}'>
+  <title>{{#if title}}{{title}} — {{/if}}Dekanat navbat</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body hx-headers='{"X-CSRF-Token":"{{csrfToken}}"}'>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">DN</span>Dekanat navbat</a>
+    <button type="button" class="menu-btn btn-sm" aria-label="Menyu">☰ Menyu</button>
+    <nav class="nav" aria-label="Asosiy menyu">
+      {{#if nav.student}}
+        <a href="/talaba" class="{{#if (eq path '/talaba')}}on{{/if}}">Bosh sahifa</a>
+        <a href="/navbat/yangi" class="{{#if (eq path '/navbat/yangi')}}on{{/if}}">Navbatga yozilish</a>
+        <a href="/navbatlarim" class="{{#if (eq path '/navbatlarim')}}on{{/if}}">Mening navbatlarim</a>
+      {{/if}}
+      {{#if nav.manager}}<a href="/panel" class="{{#if (eq path '/panel')}}on{{/if}}">Panel</a>{{/if}}
+      {{#if nav.staff}}<a href="/xodim/bugun" class="{{#if (eq path '/xodim/bugun')}}on{{/if}}">Bugungi navbat</a>{{/if}}
+      {{#if (or nav.staff nav.admin)}}<a href="/xodim/navbatlar" class="{{#if (eq path '/xodim/navbatlar')}}on{{/if}}">Navbatlar</a>{{/if}}
+      {{#if nav.tyutor}}<a href="/tyutor" class="{{#if (eq path '/tyutor')}}on{{/if}}">Guruhlarim</a>{{/if}}
+      {{#if (or nav.staff nav.admin)}}<a href="/qabul" class="{{#if (eq path '/qabul')}}on{{/if}}">Qabul vaqtlari</a>{{/if}}
+      <a href="/jadval" class="{{#if (eq path '/jadval')}}on{{/if}}">Jadval</a>
+      <a href="/bolimlar" class="{{#if (eq path '/bolimlar')}}on{{/if}}">Bo'limlar</a>
+      {{#if nav.manager}}
+        <a href="/admin/users" class="{{#if (eq path '/admin/users')}}on{{/if}}">Foydalanuvchilar</a>
+        <a href="/admin/guruhlar" class="{{#if (eq path '/admin/guruhlar')}}on{{/if}}">Guruhlar</a>
+        <a href="/admin/murojaat-turlari" class="{{#if (eq path '/admin/murojaat-turlari')}}on{{/if}}">Murojaat turlari</a>
+      {{/if}}
+      {{#each pluginNav}}<a href="{{href}}" class="{{#if on}}on{{/if}}">{{label}}</a>{{/each}}
+      {{#if nav.admin}}
+        <a href="/admin/sozlamalar" class="{{#if (eq path '/admin/sozlamalar')}}on{{/if}}">Sozlamalar</a>
+        <a href="/admin/audit" class="{{#if (eq path '/admin/audit')}}on{{/if}}">Audit</a>
+      {{/if}}
+    </nav>
+    <div class="who">
+      <a href="/profil" title="Profil">{{me.familiya}} {{me.ism}}</a>
+      <form method="post" action="/logout"><input type="hidden" name="_csrf" value="{{csrfToken}}"><button class="btn-sm" type="submit">Chiqish</button></form>
+    </div>
+  </div>
+</header>
+<main>
+  {{> flash}}
+  {{{body}}}
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="/js/htmx.min.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+node_modules/
+.env
+*.dump
+*.log
+.DS_Store
+schema-dump.txt

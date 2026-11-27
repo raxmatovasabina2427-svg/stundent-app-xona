@@ -1,0 +1,19 @@
+<div class="head"><div><h1>Haftalik qabul jadvali</h1>
+  <span class="muted">{{#if xodim}}{{xodim.familiya}} {{xodim.ism}}{{else if fakultet}}Fakultetim bo'yicha{{else}}Barcha bo'limlar{{/if}}</span></div></div>
+<form class="card filters" method="get" action="/jadval">
+  <div class="field"><label for="bolim">Bo'lim</label><select id="bolim" name="bolim"><option value="">{{#if fakultet}}Fakultetim{{else}}Hammasi{{/if}}</option>{{#each bolimlar}}<option value="{{id}}" {{sel id ../bolim}}>{{label}}</option>{{/each}}</select></div>
+  <div><button type="submit">Ko'rsatish</button></div>
+</form>
+{{#if bosh}}<div class="card empty">Bu tanlov bo'yicha faol qabul vaqtlari yo'q.</div>{{else}}
+<div class="week">
+  {{#each kunlar}}
+  <div class="col">
+    <h3>{{kun kun}}</h3>
+    {{#each items}}
+      <div class="item"><b class="mono">{{start_time}}–{{end_time}}</b>{{familiya}} {{ism}}<br><small>{{bolim}}{{#if xona}}, {{xona}}-xona{{/if}}</small><br>
+        <small>{{#if slot_min}}{{slot_min}} daq · {{sigim this}} joy{{else}}jonli · {{max_navbat}} joy{{/if}}</small></div>
+    {{else}}<div class="item muted">—</div>{{/each}}
+  </div>
+  {{/each}}
+</div>
+{{/if}}

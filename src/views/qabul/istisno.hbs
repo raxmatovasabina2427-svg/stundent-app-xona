@@ -1,0 +1,37 @@
+<div class="head"><div><h1>Qabul istisnolari</h1><span class="muted">Kasallik, xizmat safari, ta'til — xodim qabul qilmaydigan kunlar</span></div>
+  {{#if xodim}}<a class="btn" href="/qabul?xodim={{xodim.id}}">← Qabul vaqtlari</a>{{/if}}</div>
+
+{{#if canPick}}
+<form class="card filters" method="get" action="/istisno">
+  <div class="field"><label for="xodim">Xodim</label>
+    <select id="xodim" name="xodim"><option value="">— tanlang —</option>{{#each xodimlar}}<option value="{{id}}" {{sel id ../xodim.id}}>{{familiya}} {{ism}}</option>{{/each}}</select></div>
+  <div><button type="submit">Ko'rsatish</button></div>
+</form>
+{{/if}}
+
+{{#if xodim}}
+<form class="card" method="post" action="/istisno/preview">
+  {{> csrf}}
+  <input type="hidden" name="xodim_id" value="{{xodim.id}}">
+  <h2>Yangi istisno — {{xodim.familiya}} {{xodim.ism}}</h2>
+  {{#if errors}}<div class="alert err">Formani tekshiring</div>{{/if}}
+  <div class="row">
+    <div class="field"><label for="dan">Sanadan</label><input type="date" id="dan" name="dan" min="{{bugun}}" value="{{form.dan}}" required>{{> err msg=errors.dan}}</div>
+    <div class="field"><label for="gacha">Sanagacha</label><input type="date" id="gacha" name="gacha" min="{{bugun}}" value="{{form.gacha}}">
+      <div class="hint">Bir kunlik bo'lsa bo'sh qoldiring</div>{{> err msg=errors.gacha}}</div>
+  </div>
+  <div class="field"><label for="sabab">Sabab</label><input type="text" id="sabab" name="sabab" maxlength="255" value="{{form.sabab}}" required placeholder="Xizmat safari">{{> err msg=errors.sabab}}</div>
+  <button class="btn-primary" type="submit">Davom etish</button>
+</form>
+
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>Sana</th><th>Sabab</th><th></th></tr></thead>
+  <tbody>
+  {{#each istisnolar}}
+    <tr><td data-l="Sana"><b>{{sana sana}}</b></td><td data-l="Sabab">{{sabab}}</td>
+      <td class="actions"><form method="post" action="/istisno/{{id}}/delete" data-confirm="Istisno o'chirilsinmi? (Bekor qilingan navbatlar tiklanmaydi)">{{> csrf}}<input type="hidden" name="xodim_id" value="{{../xodim.id}}"><button class="btn-sm btn-red" type="submit">O'chirish</button></form></td></tr>
+  {{else}}<tr><td colspan="3" class="empty">Kelgusi istisnolar yo'q</td></tr>{{/each}}
+  </tbody>
+</table></div></div>
+{{/if}}

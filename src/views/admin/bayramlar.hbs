@@ -1,0 +1,15 @@
+<div class="head"><div><h1>Bayramlar va dam olish kunlari</h1><span class="muted">Bu kunlarda hech kim qabul qilmaydi</span></div><a class="btn" href="/admin/sozlamalar">← Sozlamalar</a></div>
+<form class="card" method="post" action="/admin/bayramlar" data-confirm="Saqlansinmi? Shu kundagi barcha faol navbatlar bekor qilinadi.">
+  {{> csrf}}
+  <div class="row">
+    <div class="field"><label for="sana">Sana</label><input type="date" id="sana" name="sana" min="{{bugun}}" required></div>
+    <div class="field"><label for="nomi">Nomi</label><input type="text" id="nomi" name="nomi" maxlength="150" required placeholder="Mustaqillik kuni"></div>
+  </div>
+  <button class="btn-primary" type="submit">Qo'shish</button>
+</form>
+<div class="card flush"><div class="table-wrap"><table>
+  <thead><tr><th>Sana</th><th>Nomi</th><th></th></tr></thead>
+  <tbody>{{#each bayramlar}}<tr><td>{{sana this.sana}}</td><td>{{nomi}}</td>
+    <td class="actions"><form method="post" action="/admin/bayramlar/{{this.sana}}/delete" data-confirm="O'chirilsinmi?">{{> csrf}}<button class="btn-sm btn-red" type="submit">O'chirish</button></form></td></tr>
+  {{else}}<tr><td colspan="3" class="empty">Kiritilmagan</td></tr>{{/each}}</tbody>
+</table></div></div>

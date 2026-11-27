@@ -1,0 +1,21 @@
+<div class="head"><h1>{{title}}</h1><a class="btn" href="/bolimlar">← Bo'limlar</a></div>
+<form class="card" method="post" action="{{#if isNew}}/admin/bolimlar{{else}}/admin/bolimlar/{{b.id}}{{/if}}">
+  {{> csrf}}
+  <div class="field"><label for="nomi">Nomi</label><input type="text" id="nomi" name="nomi" value="{{b.nomi}}" required maxlength="200">{{> err msg=errors.nomi}}</div>
+  <div class="row">
+    <div class="field"><label for="turi">Turi</label><select id="turi" name="turi" required>{{#each turlar}}<option value="{{this}}" {{sel this ../b.turi}}>{{turi this}}</option>{{/each}}</select>{{> err msg=errors.turi}}</div>
+    <div class="field"><label for="parent_id">Ota bo'lim</label><select id="parent_id" name="parent_id"><option value="">— yo'q (yuqori daraja) —</option>{{#each all}}<option value="{{id}}" {{sel id ../b.parent_id}}>{{label}}</option>{{/each}}</select>{{> err msg=errors.parent_id}}</div>
+    <div class="field"><label for="xona">Xona</label><input type="text" id="xona" name="xona" value="{{b.xona}}" maxlength="50" placeholder="204"></div>
+  </div>
+  <label class="check"><input type="checkbox" name="status" value="1" {{chk b.status}}> Faol (talabalarga ko'rinadi)</label>
+  <div class="spread mt">
+    <button class="btn-primary" type="submit">Saqlash</button>
+  </div>
+</form>
+{{#unless isNew}}
+<form class="card" method="post" action="/admin/bolimlar/{{b.id}}/delete" data-confirm="Bo'lim o'chirilsinmi?">
+  {{> csrf}}
+  <p class="muted">Ichki bo'limlar, xodimlar, guruhlar yoki qabul vaqtlari bo'lsa, o'chirib bo'lmaydi — "Faol" belgisini olib tashlang.</p>
+  <button class="btn-red" type="submit">Bo'limni o'chirish</button>
+</form>
+{{/unless}}

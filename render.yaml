@@ -1,0 +1,35 @@
+# Render Blueprint: Web Service + PostgreSQL (bir region)
+databases:
+  - name: dekanat-db
+    region: frankfurt
+    plan: free            # prod uchun pullik tarif (backup bilan)
+    postgresMajorVersion: "16"
+
+services:
+  - type: web
+    name: dekanat-app
+    runtime: node
+    region: frankfurt
+    plan: free            # prod uchun pullik (uxlamaydi)
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dekanat-db
+          property: connectionString
+      - key: DB_SSL
+        value: "false"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
+      - key: ADMIN_LOGIN
+        value: admin
+      - key: ADMIN_PAROL
+        sync: false       # Render panelida qo'lda kiriting
+      - key: APP_URL
+        sync: false

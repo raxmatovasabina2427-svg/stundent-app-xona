@@ -1,0 +1,8 @@
+<link rel="stylesheet" href="/p/xona_bron/app.css">
+<script src="/p/xona_bron/app.js" defer></script>
+<div class="head"><a class="muted" href="/xona_bron">← Xonalar</a><h1>Bron qilish</h1><p class="muted">So‘rov yuborilgach, mas’ul xodim tasdiqlashi kerak.</p></div>
+{{#if error}}<div class="alert err">{{error}}</div>{{/if}}
+<form class="card" method="post" action="/xona_bron/yangi" data-once>{{> csrf}}
+<div class="field"><label for="resurs_id">Xona</label><select id="resurs_id" name="resurs_id" required>{{#if resource}}<option value="{{resource.id}}" selected>{{resource.nomi}}</option>{{else}}<option value="">Xonani tanlang</option>{{#each resources}}<option value="{{id}}" {{sel ../values.resurs_id id}}>{{nomi}} — {{this.turi}} ({{this.sigim}} kishi)</option>{{/each}}{{/if}}</select></div>
+<div class="grid two"><div class="field"><label for="sana">Sana</label><input id="sana" name="sana" type="date" min="{{today}}" value="{{values.sana}}" required></div><div class="field"><label for="odam_soni">Odamlar soni</label><input id="odam_soni" name="odam_soni" type="number" min="1" max="1000" value="{{#if values.odam_soni}}{{values.odam_soni}}{{else}}1{{/if}}" required></div><div class="field"><label for="boshlanish">Boshlanish vaqti</label><input id="boshlanish" name="boshlanish" type="time" value="{{values.boshlanish}}" required></div><div class="field"><label for="tugash">Tugash vaqti</label><input id="tugash" name="tugash" type="time" value="{{values.tugash}}" required></div></div>
+<div class="field"><label for="sabab">Foydalanish maqsadi</label><textarea id="sabab" name="sabab" rows="3" maxlength="500" required>{{values.sabab}}</textarea></div><button class="btn btn-primary" type="submit">Bron so‘rovini yuborish</button></form>

@@ -1,0 +1,16 @@
+<div class="head"><h1>Audit jurnali</h1></div>
+<form class="card filters" method="get">
+  <div class="field"><label for="amal">Amal</label><select id="amal" name="amal"><option value="">Hammasi</option>
+    <option value="login" {{sel 'login' f.amal}}>Kirish</option><option value="user" {{sel 'user' f.amal}}>Foydalanuvchilar</option>
+    <option value="navbat" {{sel 'navbat' f.amal}}>Navbatlar</option><option value="shablon" {{sel 'shablon' f.amal}}>Qabul vaqtlari</option>
+    <option value="istisno" {{sel 'istisno' f.amal}}>Istisnolar</option><option value="bolim" {{sel 'bolim' f.amal}}>Bo'limlar</option></select></div>
+  <div class="field"><label for="user">Foydalanuvchi</label><input type="search" id="user" name="user" value="{{f.user}}" placeholder="login yoki familiya"></div>
+  <div><button type="submit">Filtr</button></div>
+</form>
+<div class="card flush"><div class="table-wrap"><table class="stack">
+  <thead><tr><th>Vaqt</th><th>Kim</th><th>Amal</th><th>Obyekt</th><th>IP</th><th>Tafsilot</th></tr></thead>
+  <tbody>{{#each rows}}<tr><td data-l="Vaqt" class="nowrap">{{qachon}}</td><td data-l="Kim">{{#if login}}{{login}}{{else}}—{{/if}}</td><td data-l="Amal"><code>{{amal}}</code></td>
+    <td data-l="Obyekt">{{obyekt}}{{#if obyekt_id}} #{{obyekt_id}}{{/if}}</td><td data-l="IP">{{ip}}</td><td data-l="Tafsilot"><small class="mono">{{tafsilot}}</small></td></tr>
+  {{else}}<tr><td colspan="6" class="empty">Yozuvlar yo'q</td></tr>{{/each}}</tbody>
+</table></div></div>
+<div class="pager">{{#if prev}}<a class="btn btn-sm" href="{{qs '/admin/audit' amal=f.amal user=f.user page=prev}}">← Oldingi</a>{{/if}}{{#if next}}<a class="btn btn-sm" href="{{qs '/admin/audit' amal=f.amal user=f.user page=next}}">Keyingi →</a>{{/if}}</div>

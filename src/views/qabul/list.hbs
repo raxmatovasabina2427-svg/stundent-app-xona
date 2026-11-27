@@ -1,0 +1,43 @@
+<div class="head">
+  <div><h1>Qabul vaqtlari</h1>{{#if xodim}}<span class="muted">{{#if isSelf}}Mening haftalik jadvalim{{else}}{{xodim.familiya}} {{xodim.ism}}{{/if}}</span>{{/if}}</div>
+  {{#if xodim}}<div class="actions">
+    <a class="btn" href="/istisno?xodim={{xodim.id}}">Istisnolar (qabul qilmaydigan kunlar)</a>
+    <a class="btn" href="/jadval?xodim={{xodim.id}}">Haftalik ko'rinish</a>
+    <a class="btn btn-primary" href="/qabul/new?xodim={{xodim.id}}">+ Qabul vaqti</a>
+  </div>{{/if}}
+</div>
+
+{{#if canPick}}
+<form class="card filters" method="get" action="/qabul">
+  <div class="field"><label for="xodim">Xodim</label>
+    <select id="xodim" name="xodim"><option value="">— tanlang —</option>{{#each xodimlar}}<option value="{{id}}" {{sel id ../xodim.id}}>{{familiya}} {{ism}} ({{rol role}})</option>{{/each}}</select></div>
+  <div><button type="submit">Ko'rsatish</button></div>
+</form>
+{{/if}}
+
+{{#if xodim}}
+<div class="card flush"><div class="table-wrap">
+<table class="stack">
+  <thead><tr><th>Kun</th><th>Vaqt</th><th>Bo'lim</th><th>Rejim</th><th>Sig'im</th><th>Kelgusi bronlar</th><th>Holat</th><th></th></tr></thead>
+  <tbody>
+  {{#each shablonlar}}
+  <tr class="{{#unless status}}off{{/unless}}">
+    <td data-l="Kun"><b>{{kun hafta_kuni}}</b></td>
+    <td data-l="Vaqt" class="mono">{{start_time}}–{{end_time}}</td>
+    <td data-l="Bo'lim">{{bolim}}</td>
+    <td data-l="Rejim">{{#if slot_min}}{{slot_min}} daqiqalik slot{{else}}Jonli navbat{{/if}}</td>
+    <td data-l="Sig'im">{{joylar}} ta</td>
+    <td data-l="Kelgusi">{{kelgusi}}</td>
+    <td data-l="Holat">{{#if status}}<span class="badge b-on">Faol</span>{{else}}<span class="badge b-off">Nofaol</span>{{/if}}</td>
+    <td class="actions">
+      <a class="btn btn-sm" href="/qabul/{{id}}/edit">Tahrirlash</a>
+      <form method="post" action="/qabul/{{id}}/holat">{{> csrf}}<input type="hidden" name="status" value="{{#if status}}0{{else}}1{{/if}}"><button class="btn-sm" type="submit">{{#if status}}Nofaol qilish{{else}}Faollashtirish{{/if}}</button></form>
+      <form method="post" action="/qabul/{{id}}/delete" data-confirm="Qabul vaqti o'chirilsinmi?{{#if kelgusi}} Kelgusi {{kelgusi}} ta navbat bekor qilinadi.{{/if}}">{{> csrf}}<button class="btn-sm btn-red" type="submit">O'chirish</button></form>
+    </td>
+  </tr>
+  {{else}}<tr><td colspan="8" class="empty">Qabul vaqtlari kiritilmagan. "+ Qabul vaqti" tugmasini bosing.</td></tr>{{/each}}
+  </tbody>
+</table></div></div>
+{{else}}
+  <div class="card empty">Jadvalini ko'rish uchun xodimni tanlang.</div>
+{{/if}}

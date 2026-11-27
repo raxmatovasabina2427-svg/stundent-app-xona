@@ -1,0 +1,23 @@
+<div class="card">
+  <h1>Istisnoni tasdiqlang</h1>
+  <dl class="kv">
+    <dt>Xodim</dt><dd>{{xodim.familiya}} {{xodim.ism}}</dd>
+    <dt>Sana</dt><dd>{{sana d.dan}}{{#if (ne d.dan d.gacha)}} — {{sana d.gacha}} ({{days}} kun){{/if}}</dd>
+    <dt>Sabab</dt><dd>{{d.sabab}}</dd>
+  </dl>
+  {{#if n}}
+    <div class="alert warn mt"><b>{{n}} ta talaba navbati bekor qilinadi</b> va ularga xabar yuboriladi.</div>
+    <div class="table-wrap"><table><thead><tr><th>Sana</th><th>№</th><th>Vaqt</th><th>Talaba</th></tr></thead><tbody>
+      {{#each rows}}<tr><td>{{sana sana}}</td><td>{{navbat_raqami}}</td><td class="mono">{{#if boshlanish}}{{boshlanish}}{{else}}jonli{{/if}}</td><td>{{familiya}} {{ism}}</td></tr>{{/each}}
+    </tbody></table></div>
+  {{else}}
+    <div class="alert info mt">Bu kunlarda faol navbatlar yo'q.</div>
+  {{/if}}
+  <form class="inline" method="post" action="/istisno" data-once>
+    {{> csrf}}
+    <input type="hidden" name="xodim_id" value="{{xodim.id}}"><input type="hidden" name="dan" value="{{d.dan}}">
+    <input type="hidden" name="gacha" value="{{d.gacha}}"><input type="hidden" name="sabab" value="{{d.sabab}}">
+    <button class="btn-primary" type="submit">Tasdiqlash</button>
+  </form>
+  <a class="btn" href="/istisno?xodim={{xodim.id}}">Bekor qilish</a>
+</div>

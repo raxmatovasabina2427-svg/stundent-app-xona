@@ -1,0 +1,19 @@
+<div class="auth">
+  <form class="card" method="post" action="/login" data-once>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">DN</span>Dekanat navbat</div>
+    <h1 class="center auth-title">Tizimga kirish</h1>
+    <p class="muted center">Elektron qabul va navbat tizimi</p>
+    {{#if error}}<div class="alert err" role="alert">{{error}}</div>{{/if}}
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <div class="field">
+      <label for="login">Login</label>
+      <input type="text" id="login" name="login" value="{{login}}" autocomplete="username" autocapitalize="none" required autofocus>
+    </div>
+    <div class="field">
+      <label for="parol">Parol</label>
+      <input type="password" id="parol" name="parol" autocomplete="current-password" required>
+    </div>
+    <button class="btn-primary btn-block btn-lg" type="submit">Kirish</button>
+    <p class="muted center auth-foot">Parolni unutdingizmi? Dekanatga murojaat qiling — vaqtinchalik parol beriladi.</p>
+  </form>
+</div>

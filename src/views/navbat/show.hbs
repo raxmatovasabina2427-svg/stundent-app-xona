@@ -1,0 +1,64 @@
+<div class="head"><h1>Navbat</h1>
+  <a class="btn" href="{{#if isOwner}}/navbatlarim{{else}}/xodim/navbatlar{{/if}}">← Orqaga</a></div>
+
+<div class="grid two">
+  <section class="card ticket">
+    <div class="muted">Navbat raqami</div>
+    <div class="num">№{{n.navbat_raqami}}</div>
+    <div>{{> badge s=n.status}}</div>
+    <p class="mt mb0"><b>{{sana n.sana}}</b> ({{kun n.hafta_kuni}})<br>
+      <span class="mono">{{#if n.boshlanish}}{{n.boshlanish}}–{{n.tugash}}{{else}}Jonli navbat · qabul {{n.start_time}}–{{n.end_time}}{{/if}}</span></p>
+    <p class="mb0">{{n.x_familiya}} {{n.x_ism}}<br>{{n.bolim}}{{#if n.xona}}, <b>{{n.xona}}-xona</b>{{/if}}</p>
+  </section>
+
+  <section class="card">
+    <h2>Tafsilotlar</h2>
+    <dl class="kv">
+      {{#unless isOwner}}<dt>Talaba</dt><dd>{{n.familiya}} {{n.ism}} {{n.ochestva}}{{#if n.guruh}}<br><small>{{n.guruh}} · {{n.kurs}}-kurs</small>{{/if}}{{#if n.phone}}<br><small>{{n.phone}}</small>{{/if}}</dd>{{/unless}}
+      <dt>Murojaat turi</dt><dd>{{n.murojaat}}</dd>
+      {{#if n.mavzu}}<dt>Mavzu</dt><dd>{{n.mavzu}}</dd>{{/if}}
+      {{#if n.kerakli_hujjatlar}}<dt>Kerakli hujjatlar</dt><dd>{{n.kerakli_hujjatlar}}</dd>{{/if}}
+      {{#if n.javob_izoh}}<dt>Javob / izoh</dt><dd>{{n.javob_izoh}}</dd>{{/if}}
+    </dl>
+    {{#if canCancel}}
+      <form class="mt" method="post" action="/navbat/{{n.id}}/bekor" data-confirm="Navbat bekor qilinsinmi?">
+        {{> csrf}}
+        <div class="field"><label for="sabab">Bekor qilish sababi (ixtiyoriy)</label><input type="text" id="sabab" name="sabab" maxlength="500"></div>
+        <button class="btn-red" type="submit">Navbatni bekor qilish</button>
+        <div class="hint muted">Qabuldan kamida {{bekorSoat}} soat oldin bekor qilish mumkin.</div>
+      </form>
+    {{/if}}
+  </section>
+</div>
+
+{{#if canManage}}
+<section class="card">
+  <h2>Amallar</h2>
+  <div class="spread">
+    <div>
+    {{#each actions}}
+      {{#if izoh}}
+        <details class="act"><summary class="btn {{cls}}">{{label}}</summary>
+          <form method="post" action="/navbat/{{../n.id}}/holat">{{> csrf}}<input type="hidden" name="status" value="{{to}}">
+            <div class="field"><label>Sabab (majburiy)</label><textarea name="izoh" required maxlength="2000"></textarea></div>
+            <button class="btn-red btn-sm" type="submit">{{label}}</button></form></details>
+      {{else}}
+        <form class="inline" method="post" action="/navbat/{{../n.id}}/holat">{{> csrf}}<input type="hidden" name="status" value="{{to}}"><button class="{{cls}}" type="submit">{{label}}</button></form>
+      {{/if}}
+    {{else}}<span class="muted">Bu holatda amal yo'q</span>{{/each}}
+    </div>
+  </div>
+  <form class="mt" method="post" action="/navbat/{{n.id}}/javob">
+    {{> csrf}}
+    <div class="field"><label for="javob">Talabaga javob / izoh</label><textarea id="javob" name="javob" maxlength="2000" required>{{n.javob_izoh}}</textarea></div>
+    <button class="btn" type="submit">Javobni saqlash</button>
+  </form>
+</section>
+{{/if}}
+
+<section class="card">
+  <h2>Holatlar tarixi</h2>
+  {{#each tarix}}
+    <div>{{> badge s=yangi_status}} <small class="muted">{{#if familiya}}{{familiya}} {{ism}}{{else}}Tizim{{/if}}{{#if izoh}} — {{izoh}}{{/if}}</small></div>
+  {{/each}}
+</section>

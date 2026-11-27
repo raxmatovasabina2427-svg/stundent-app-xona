@@ -1,0 +1,40 @@
+<div class="head">
+  <div><h1>{{b.nomi}}</h1><span class="muted">{{turi b.turi}}{{#if b.parent_nomi}} · {{b.parent_nomi}}{{/if}}{{#if b.xona}} · {{b.xona}}-xona{{/if}}</span>
+    {{#unless b.status}} <span class="badge b-off">nofaol</span>{{/unless}}</div>
+  <div class="actions">
+    {{#if canBook}}<a class="btn btn-primary" href="/navbat/yangi?bolim={{b.id}}">Navbatga yozilish</a>{{/if}}
+    {{#if nav.admin}}<a class="btn" href="/admin/bolimlar/{{b.id}}/edit">Tahrirlash</a>{{/if}}
+    {{#if nav.manager}}<a class="btn" href="/admin/murojaat-turlari?bolim={{b.id}}">Murojaat turlari</a>{{/if}}
+  </div>
+</div>
+
+{{#if bolalar.length}}
+<section class="card"><h2>Ichki bo'limlar</h2>
+  {{#each bolalar}}<a class="btn btn-sm" href="/bolimlar/{{id}}">{{nomi}}</a> {{/each}}
+</section>
+{{/if}}
+
+<div class="grid two">
+  <section class="card">
+    <h2>Xodimlar</h2>
+    {{#each xodimlar}}
+      <div class="mb0"><b>{{familiya}} {{ism}} {{ochestva}}</b>{{#if lavozim}} — <span class="muted">{{lavozim}}</span>{{/if}}</div>
+    {{else}}<p class="muted">Xodimlar biriktirilmagan</p>{{/each}}
+  </section>
+  <section class="card">
+    <h2>Murojaat turlari</h2>
+    {{#each turlar}}
+      <div class="mb0"><b>{{nomi}}</b>{{#if tavsif}}<br><small class="muted">{{tavsif}}</small>{{/if}}</div>
+    {{else}}<p class="muted">Kiritilmagan</p>{{/each}}
+  </section>
+</div>
+
+<section class="card">
+  <h2>Haftalik qabul jadvali</h2>
+  {{#if jadval.length}}
+  <div class="table-wrap"><table class="stack">
+    <thead><tr><th>Kun</th><th>Vaqt</th><th>Xodim</th><th>Rejim</th></tr></thead>
+    <tbody>{{#each jadval}}<tr><td data-l="Kun">{{kun hafta_kuni}}</td><td data-l="Vaqt" class="mono">{{start_time}}–{{end_time}}</td><td data-l="Xodim">{{familiya}} {{ism}}</td><td data-l="Rejim">{{#if slot_min}}{{slot_min}} daqiqalik slotlar{{else}}Jonli navbat{{/if}}</td></tr>{{/each}}</tbody>
+  </table></div>
+  {{else}}<p class="muted">Qabul vaqtlari kiritilmagan</p>{{/if}}
+</section>

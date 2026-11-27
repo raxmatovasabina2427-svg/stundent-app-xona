@@ -1,0 +1,9 @@
+<div class="head"><div><h1>Guruhlarim</h1><span class="muted">Tyutor sifatida biriktirilgan guruhlar</span></div>
+  <div class="actions"><a class="btn" href="/xodim/bugun">Mening qabulim</a></div></div>
+<div class="choice-list">
+{{#each guruhlar}}
+  <a class="choice" href="/tyutor/guruh/{{guruh}}">
+    <b>{{guruh}}</b><small>{{fakultet}}{{#if kurs}} · {{kurs}}-kurs{{/if}} · {{talabalar}} talaba · {{kelgusi}} ta kelgusi navbat</small>
+  </a>
+{{else}}<div class="card empty">Sizga guruh biriktirilmagan. Dekanatga murojaat qiling.</div>{{/each}}
+</div>
